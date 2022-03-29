@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -28,12 +28,27 @@
 #include "../../module/motion.h"
 #include "../../module/probe.h"
 
+#ifdef BLTOUCH_HS_MODE
+  #include "../../feature/bltouch.h"
+#endif
+
 /**
  * M401: Deploy and activate the Z probe
+ *
+ * With BLTOUCH_HS_MODE:
+ *  S<bool> Set High Speed (HS) Mode and exit without deploy
  */
 void GcodeSuite::M401() {
-  probe.deploy();
-  report_current_position();
+  if (parser.seen('S')) {
+    #ifdef BLTOUCH_HS_MODE
+      bltouch.high_speed_mode = parser.value_bool();
+    #endif
+  }
+  else {
+    probe.deploy();
+    TERN_(PROBE_TARE, probe.tare());
+    report_current_position();
+  }
 }
 
 /**
@@ -41,9 +56,7 @@ void GcodeSuite::M401() {
  */
 void GcodeSuite::M402() {
   probe.stow();
-  #ifdef Z_AFTER_PROBING
-    probe.move_z_after_probing();
-  #endif
+  probe.move_z_after_probing();
   report_current_position();
 }
 
