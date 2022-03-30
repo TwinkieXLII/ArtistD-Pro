@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -25,7 +25,7 @@
   extern "C" {
 #endif
 
-    esp_err_t esp_task_wdt_reset();
+  esp_err_t esp_task_wdt_reset();
 
 #ifdef __cplusplus
   }

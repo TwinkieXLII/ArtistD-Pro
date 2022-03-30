@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -35,8 +35,8 @@ public:
       static float smoothing_mm;
     #endif
 
-    static inline void set_correction(const float &v) { correction = _MAX(0, _MIN(1.0, v)) * all_on; }
-    static inline float get_correction() { return float(ui8_to_percent(correction)) / 100.0f; }
+    static void set_correction(const_float_t v) { correction = _MAX(0, _MIN(1.0, v)) * all_on; }
+    static float get_correction() { return float(ui8_to_percent(correction)) / 100.0f; }
   #else
     static constexpr uint8_t correction = (BACKLASH_CORRECTION) * 0xFF;
     static const xyz_float_t distance_mm;
@@ -53,35 +53,25 @@ public:
       static void measure_with_probe();
   #endif
 
-  static inline float get_measurement(const AxisEnum a) {
+  static float get_measurement(const AxisEnum a) {
+    UNUSED(a);
     // Return the measurement averaged over all readings
-    return (
-      #if ENABLED(MEASURE_BACKLASH_WHEN_PROBING)
-        measured_count[a] > 0 ? measured_mm[a] / measured_count[a] :
-      #endif
-      0
+    return TERN(MEASURE_BACKLASH_WHEN_PROBING
+      , measured_count[a] > 0 ? measured_mm[a] / measured_count[a] : 0
+      , 0
     );
-    #if DISABLED(MEASURE_BACKLASH_WHEN_PROBING)
-      UNUSED(a);
-    #endif
   }
 
-  static inline bool has_measurement(const AxisEnum a) {
-    return (false
-      #if ENABLED(MEASURE_BACKLASH_WHEN_PROBING)
-        || (measured_count[a] > 0)
-      #endif
-    );
-    #if DISABLED(MEASURE_BACKLASH_WHEN_PROBING)
-      UNUSED(a);
-    #endif
+  static bool has_measurement(const AxisEnum a) {
+    UNUSED(a);
+    return TERN0(MEASURE_BACKLASH_WHEN_PROBING, measured_count[a] > 0);
   }
 
-  static inline bool has_any_measurement() {
+  static bool has_any_measurement() {
     return has_measurement(X_AXIS) || has_measurement(Y_AXIS) || has_measurement(Z_AXIS);
   }
 
-  void add_correction_steps(const int32_t &da, const int32_t &db, const int32_t &dc, const uint8_t dm, block_t * const block);
+  void add_correction_steps(const int32_t &da, const int32_t &db, const int32_t &dc, const axis_bits_t dm, block_t * const block);
 };
 
 extern Backlash backlash;
