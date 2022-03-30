@@ -16,12 +16,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
 
-#include "../shared/Marduino.h"
+#include "../../inc/MarlinConfig.h" // Allow pins/pins.h to override SDIO clock / retries
 
 #include <libmaple/sdio.h>
 #include <libmaple/dma.h>
@@ -96,12 +96,17 @@
 #define SDMMC_MAX_VOLT_TRIAL                 0x00000FFFU
 #define SDIO_CARD_TRANSFER                   0x00000004U    /* Card is in transfer state */
 #define SDIO_CARD_ERROR                      0x000000FFU    /* Card response Error */
-#define SDIO_CMDTIMEOUT                      200U           /* Command send and response timeout */
-#define SDIO_DATA_TIMEOUT                    100U           /* Read data transfer timeout */
-#define SDIO_WRITE_TIMEOUT                   200U           /* Write data transfer timeout */
+#define SDIO_CMDTIMEOUT                      300U //JGMaker           /* Command send and response timeout */
+#define SDIO_DATA_TIMEOUT                    200U //JGMaker           /* Read data transfer timeout */
+#define SDIO_WRITE_TIMEOUT                   300U //JGMaker           /* Write data transfer timeout */
 
-//#define SDIO_CLOCK                           18000000      /* 18 MHz */
-#define SDIO_CLOCK                           4500000       /* 4.5 MHz */  // Testing, use if printer is drifting position during long prints. May cause printer halt error.
+#ifndef SDIO_CLOCK
+  #define SDIO_CLOCK                         18000000       /* 18 MHz */
+#endif
+
+#ifndef SDIO_READ_RETRIES
+  #define SDIO_READ_RETRIES                  3
+#endif
 
 // ------------------------
 // Types

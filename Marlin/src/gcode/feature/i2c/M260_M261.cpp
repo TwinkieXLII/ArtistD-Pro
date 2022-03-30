@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -26,12 +26,12 @@
 
 #include "../../gcode.h"
 
-#include "../../../MarlinCore.h" // for i2c
+#include "../../../feature/twibus.h"
 
 /**
  * M260: Send data to a I2C slave device
  *
- * This is a PoC, the formating and arguments for the GCODE will
+ * This is a PoC, the formatting and arguments for the GCODE will
  * change to be more compatible, the current proposal is:
  *
  *  M260 A<slave device address base 10> ; Sets the I2C slave address the data will be sent to
@@ -42,7 +42,6 @@
  *
  *  M260 S1 ; Send the buffered data and reset the buffer
  *  M260 R1 ; Reset the buffer without sending data
- *
  */
 void GcodeSuite::M260() {
   // Set the target address
@@ -61,15 +60,16 @@ void GcodeSuite::M260() {
 /**
  * M261: Request X bytes from I2C slave device
  *
- * Usage: M261 A<slave device address base 10> B<number of bytes>
+ * Usage: M261 A<slave device address base 10> B<number of bytes> S<style>
  */
 void GcodeSuite::M261() {
   if (parser.seen('A')) i2c.address(parser.value_byte());
 
-  uint8_t bytes = parser.byteval('B', 1);
+  const uint8_t bytes = parser.byteval('B', 1),   // Bytes to request
+                style = parser.byteval('S');      // Serial output style (ASCII, HEX etc)
 
   if (i2c.addr && bytes && bytes <= TWIBUS_BUFFER_SIZE)
-    i2c.relay(bytes);
+    i2c.relay(bytes, style);
   else
     SERIAL_ERROR_MSG("Bad i2c request");
 }
