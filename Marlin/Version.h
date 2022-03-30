@@ -28,7 +28,7 @@
 /**
  * Marlin release version identifier //BASED on 2.0.9.3 BUGFIX
  */
-#define SHORT_BUILD_VERSION "TwinkiePro-2022.2.1-RC1"
+#define SHORT_BUILD_VERSION "TwinkiePro-2022.2.1"
 
 /**
  * Verbose version identifier which should contain a reference to the location
