@@ -189,6 +189,7 @@
 #define FIL_RUNOUT2_PIN                     PE6   // MT_DET2
 #define FIL_RUNOUT3_PIN                     PG14  // MT_DET3
 #define BEEPER_PIN                          PC5
+
 //
 // Power Supply Control
 //
