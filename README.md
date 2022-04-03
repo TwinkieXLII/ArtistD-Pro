@@ -1,4 +1,7 @@
-# Firmware For JGMaker Artist-D PRO
+# Twinkie Firmware For JGMaker Artist-D Pro Version
+![GitHub](https://img.shields.io/github/license/TwinkieXLII/ArtistD-Pro.svg)
+![GitHub Release Date](https://img.shields.io/github/release-date/TwinkieXLII/ArtistD-Pro.svg)
+
 This version of the firmware is based from the 2.0.9.3 Version of the Upstream Marlin Project.  
 The current Version is only for Stock Printers.  
 
@@ -22,6 +25,3 @@ Thie will set an upstream remote that you can fetch and merge from.
 
 #Join the Community
 [Checkout our Discord Server](https://discord.gg/H97VgdSwjF)
-
-## Official Firmware 
-* Get the inital release of the Manufacturer Firmware: https://github.com/JGMaker3dofficial/ArtistD-Pro

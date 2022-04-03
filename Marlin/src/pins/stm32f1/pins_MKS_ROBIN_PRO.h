@@ -141,7 +141,7 @@
   //#define E1_HARDWARE_SERIAL MSerial1
   //#define E2_HARDWARE_SERIAL MSerial1
 
-  #define TMC_BAUD_RATE 19200
+  #define TMC_BAUD_RATE                   19200
   #define X_SERIAL_TX_PIN                   PF7
   #define X_SERIAL_RX_PIN                   PF8
 
